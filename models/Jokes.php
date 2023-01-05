@@ -1,13 +1,14 @@
 <?php 
 
 class Jokes{
-
-     static public function getAll(){
-        $stm = DB::connex()->prepare("select * from jokes");
+    
+   
+     static public function getAll($type){
+        $stm = DB::connex()->prepare("select * from jokes ORDER by id $type ");
         $stm->execute();
+
         return $stm->fetchAll();
     
-
     }
     static public function getJoke($data){
         try{
@@ -24,12 +25,12 @@ class Jokes{
     }
 
    static public function addJokes($data){
+   
     $stm = DB::connex()->prepare("insert into jokes(text) values(?)");
-    $stm->execute([$data['text']]);
-       if($stm->execute()){
-
+       if( $stm->execute([$data['text']])){
             return true;
-       }else{
+       }
+       else{
             return false;
        }
 
@@ -49,9 +50,20 @@ class Jokes{
        }else{
             return false;
        }
+   }
 
-       
 
+   static public function deleteJokes($data){
+    //   die(print_r($data));
+    $stm = DB::connex()->prepare("delete from jokes  WHERE id=?");
+
+    $stm->execute([$data]);
+       if($stm->execute()){
+
+            return true;
+       }else{
+            return false;
+       }
    }
 }
 

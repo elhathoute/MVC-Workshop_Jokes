@@ -2,12 +2,13 @@
 
 class JokeController{
       
-    public function getAllJokes(){
-        $jokes = Jokes::getAll();
+    public function getAllJokes($type){
+       
+        $jokes = Jokes::getAll($type);
 
         return $jokes;
     }
-
+ 
     public function getOneJokes(){
         if(isset($_POST['id'])){
             $data=array(
@@ -52,6 +53,17 @@ class JokeController{
               }
         }
   
+      }
+      public function deleteJoke(){
+        if(isset($_POST['id'])){
+           $data['id']=$_POST['id'];
+           $result=Jokes::deleteJokes($data['id']);
+           if($result===true){
+            header('location:' . BASE_URL);
+        }else{
+            echo $result;
+        }
+        }
       }
 }
 
